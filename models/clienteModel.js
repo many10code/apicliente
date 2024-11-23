@@ -15,6 +15,28 @@ class Cliente {
     return result.rows[0];
   }
 
+  static async actualizarCliente(id, datos) {
+    const campos = [];
+    const valores = [];
+    let indice = 1;
+
+    for (const [campo, valor] of Object.entries(datos)) {
+      campos.push(`${campo} = $${indice}`);
+      valores.push(valor);
+      indice++;
+    }
+
+    const query = `
+      UPDATE clientes
+      SET ${campos.join(', ')}
+      WHERE id_cliente = $${indice}
+      RETURNING *
+    `;
+    valores.push(id);
+    const result = await pool.query(query, valores);
+    return result.rows[0];
+  }
+
   constructor({ nombre, apellidos, correo, contrasena, direccion, telefono }) {
     this.nombre = nombre;
     this.apellidos = apellidos;

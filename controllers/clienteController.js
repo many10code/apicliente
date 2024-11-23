@@ -94,6 +94,27 @@ class ClienteController {
       res.status(500).json({ mensaje: "Error en el servidor." });
     }
   }
+
+  // Método para actualizar los datos del cliente
+  static async actualizarCliente(req, res) {
+    const { id } = req.params;
+    const datos = req.body;
+
+    try {
+      const clienteActualizado = await Cliente.actualizarCliente(id, datos);
+      if (!clienteActualizado) {
+        return res.status(404).json({ mensaje: "Cliente no encontrado." });
+      }
+
+      res.json({
+        mensaje: "Datos del cliente actualizados exitosamente.",
+        cliente: clienteActualizado,
+      });
+    } catch (error) {
+      console.error("Error al actualizar el cliente:", error);
+      res.status(500).json({ mensaje: "Error en el servidor." });
+    }
+  }
 }
 
 module.exports = ClienteController;
