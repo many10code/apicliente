@@ -1,4 +1,3 @@
-// controllers/clienteController.js
 const bcrypt = require('bcrypt');
 const Cliente = require('../models/clienteModel');
 
@@ -78,7 +77,23 @@ class ClienteController {
       res.status(500).json({ mensaje: "Error en el servidor." });
     }
   }
+
+  // Método para obtener un cliente por ID
+  static async obtenerClientePorId(req, res) {
+    const { id } = req.params;
+
+    try {
+      const cliente = await Cliente.obtenerClientePorId(id);
+      if (!cliente) {
+        return res.status(404).json({ mensaje: "Cliente no encontrado." });
+      }
+
+      res.json(cliente);
+    } catch (error) {
+      console.error("Error al obtener el cliente:", error);
+      res.status(500).json({ mensaje: "Error en el servidor." });
+    }
+  }
 }
 
 module.exports = ClienteController;
-

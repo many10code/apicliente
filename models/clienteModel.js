@@ -1,10 +1,16 @@
-// models/Cliente.js
 const pool = require('../config/db'); // Asegúrate de que la conexión a la base de datos esté configurada correctamente
 
 class Cliente {
   static async obtenerClientePorCorreo(correo) {
     const query = "SELECT * FROM clientes WHERE correo = $1";
     const values = [correo];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  }
+
+  static async obtenerClientePorId(id) {
+    const query = "SELECT * FROM clientes WHERE id_cliente = $1";
+    const values = [id];
     const result = await pool.query(query, values);
     return result.rows[0];
   }
